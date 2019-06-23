@@ -27,8 +27,14 @@ spec:
               type: string
             authSecret:
               type: object
+              properties:
+                name:
+                  type: string
             objects:
               type: object
               properties:
                 configMap:
                   type: object
+                  properties:
+                    name:
+                      type: string
