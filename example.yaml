@@ -1,0 +1,79 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-kinto-secret
+type: Opaque
+stringData:
+  auth: admin:my-secret-kinto-password
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-kinto-wizard-dump
+data:
+  objects: |
+    buckets:
+      examplebucket:
+        collections:
+          examplecollection:
+            data:
+              attachment:
+                enabled: false
+                required: false
+              cache_expires: 0
+              displayFields:
+              - name
+              - date
+              id: examplecollection
+              last_modified: 1556457209943
+              schema:
+                properties:
+                  name:
+                    type: string
+                  date:
+                    type: string
+                required:
+                - name
+                type: object
+              sort: name
+              uiSchema:
+                name:
+                  ui:readonly: true
+                date:
+                  ui:readonly: true
+                ui:order:
+                - name
+                - date
+            permissions:
+              read:
+              - account:admin
+              - system.Authenticated
+              - system.Everyone
+              record:create:
+              - account:admin
+              write:
+              - account:admin
+        data:
+          id: examplebucket
+          last_modified: 1556457381955
+        groups: {}
+        permissions:
+          read:
+          - system.Authenticated
+          - system.Everyone
+          write:
+          - account:admin
+---
+apiVersion: codeformuenster.org/v1
+kind: KintoObject
+metadata:
+  name: example-kinto-wizard-dump
+spec:
+  server: https://kinto:8888/v1
+  authSecret:
+    name: my-kinto-secret
+  objects:
+    configMap:
+      name: my-kinto-wizard-dump
+
