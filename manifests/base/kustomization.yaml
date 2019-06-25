@@ -1,0 +1,15 @@
+kind: Kustomization
+
+# namespace:
+
+# https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+# commonLabels:
+#   app.kubernetes.io/part-of: kinto-stack
+
+resources:
+# - 0-namespace.yaml
+# - cluster-role-oidc-mapping.yaml
+- crd.yaml
+- operator.yaml
+# - elasticsearch.yaml
+# - realm.yaml

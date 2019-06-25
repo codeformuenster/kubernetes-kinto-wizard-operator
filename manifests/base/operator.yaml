@@ -1,0 +1,98 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: default
+  name: kinto-objects-account
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: kinto-objects-role-cluster
+rules:
+
+  # # Framework: knowing which other operators are running (i.e. peering).
+  # - apiGroups: [zalando.org]
+  #   resources: [clusterkopfpeerings]
+  #   verbs: [list, watch, patch, get]
+  # - apiGroups: [apiextensions.k8s.io]
+  #   resources: [customresourcedefinitions]
+  #   verbs: [list, get]
+
+  # Application: read-only access for watching cluster-wide.
+  - apiGroups: [codeformuenster.org]
+    resources: [kinto-objects]
+    verbs: [list, watch]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  namespace: default
+  name: kinto-objects-role-namespaced
+rules:
+
+  # # Framework: knowing which other operators are running (i.e. peering).
+  # - apiGroups: [zalando.org]
+  #   resources: [kopfpeerings]
+  #   verbs: [list, watch, patch, get]
+
+  # Framework: posting the events about the handlers progress/errors.
+  - apiGroups: [events.k8s.io]
+    resources: [events]
+    verbs: [create]
+  - apiGroups: [""]
+    resources: [events]
+    verbs: [create]
+
+  - apiGroups: [codeformuenster.org]
+    resources: [kinto-objects]
+    verbs: [list, watch, patch]
+
+  - apiGroups: [""]
+    resources: [secrets, configmaps]
+    verbs: [get]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: kinto-objects-rolebinding-cluster
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kinto-objects-role-cluster
+subjects:
+  - kind: ServiceAccount
+    name: kinto-objects-account
+    # namespace: "{{NAMESPACE}}"
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  # namespace: "{{NAMESPACE}}"
+  name: kinto-objects-rolebinding-namespaced
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: kinto-objects-role-namespaced
+subjects:
+  - kind: ServiceAccount
+    name: kinto-objects-account
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kinto-objects-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: kinto-objects-operator
+  template:
+    metadata:
+      labels:
+        application: kinto-objects-operator
+    spec:
+      serviceAccountName: kinto-objects-account
+      containers:
+      - name: the-only-one
+        image: quay.io/codeformuenster/kinto-wizard-operator:0.0.1

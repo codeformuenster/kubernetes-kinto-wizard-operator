@@ -70,7 +70,7 @@ kind: KintoObject
 metadata:
   name: example-kinto-wizard-dump
 spec:
-  server: https://kinto:8888/v1
+  server: http://kinto:8888/v1
   authSecret:
     name: my-kinto-secret
   objects:

@@ -2,6 +2,6 @@
 
 WIP kubernetes operator to apply kinto-wizards dumps to kinto deployments
 
-## Quickstart
+## Quickstart (kustomize)
 
-- `kubectl apply -f crd.yaml`
+- `kubectl apply -k manifests/overlay`
