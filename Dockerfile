@@ -2,12 +2,13 @@ FROM python:3.7-alpine
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt && \
+  addgroup -S kopf && adduser -S kopf -G kopf
 
 WORKDIR /usr/src/app
 
-COPY --chown=1001:1001 handlers.py .
+COPY --chown=kopf:kopf handlers.py .
 
-USER 1001
+USER kopf
 
 CMD ["/usr/local/bin/kopf", "run", "--standalone", "handlers.py"]
