@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements.in
 #
-aiohttp==3.5.4
+aiohttp==3.7.4
     # via aiojobs
 aiojobs==0.2.2
     # via kopf
@@ -81,6 +81,8 @@ six==1.12.0
     #   pyrsistent
     #   python-dateutil
     #   websocket-client
+typing-extensions==3.7.4.3
+    # via aiohttp
 unidecode==1.1.1
     # via kinto-http
 urllib3==1.25.3
