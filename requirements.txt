@@ -60,7 +60,7 @@ pyrsistent==0.15.2
     # via jsonschema
 python-dateutil==2.8.0
     # via kubernetes
-pyyaml==5.1.1
+pyyaml==5.4
     # via kubernetes
 requests-oauthlib==1.2.0
     # via kubernetes
