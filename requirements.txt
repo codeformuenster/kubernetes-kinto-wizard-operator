@@ -83,7 +83,7 @@ six==1.12.0
     #   websocket-client
 unidecode==1.1.1
     # via kinto-http
-urllib3==1.25.3
+urllib3==1.25.8
     # via
     #   kubernetes
     #   requests
