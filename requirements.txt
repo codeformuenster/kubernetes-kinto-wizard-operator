@@ -69,7 +69,7 @@ requests==2.22.0
     #   kinto-http
     #   kubernetes
     #   requests-oauthlib
-rsa==4.1
+rsa==4.7
     # via google-auth
 ruamel.yaml==0.15.97
     # via kinto-wizard
